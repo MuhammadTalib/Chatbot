@@ -1,4 +1,5 @@
 
+import dj_database_url
 import os
 from decouple import config
 
@@ -6,9 +7,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '+*r3%gkf)5eq*t6#(%@9)kuhv-r%u^q^mhyy+v!5mv5ejg2u%6'
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['chatbot-server-0619.herokuapp.com']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,6 +26,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -42,7 +45,9 @@ CORS_ORIGIN_WHITELIST = [
     "https://example.com",
     "https://sub.example.com",
     "http://localhost:3000",
-    "http://127.0.0.1:9000"
+    "http://localhost:3001",
+    "http://127.0.0.1:9000",
+    "https://chatbot-0619.herokuapp.com/"
 ]
 
 TEMPLATES = [
@@ -96,16 +101,20 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
+STATIC_URL = '/static/'
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
+# Extra lookup directories for collectstatic to find static files
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
+#  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

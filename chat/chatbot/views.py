@@ -32,14 +32,15 @@ class ChatView(APIView):
         Headers = {
             'Authorization': 'Bearer 14cb40553f924b9db58b8744f1bae8f5',
         }
-        r = requests.get(url, headers=Headers)
-        print("The response", r.json()['result']['fulfillment']['speech'])
+        c=0
+        r=getResponse(url,Headers,c)
+        print("The response", r)
 
         showtime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
         print(showtime)
         serializer = RequestSerializer(data={
                                              "request": message['request'],
-                                             "response": r.json()['result']['fulfillment']['speech'],
+                                             "response": r,
                                              "sender": request.data['sender'],
                                              "sender_id": request.data['sender_id']
                                              })
@@ -48,7 +49,19 @@ class ChatView(APIView):
             print(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+    
+def getResponse(url,Headers,c):
+    try:
+        r = requests.get(url, headers=Headers)
+        return r.json()['result']['fulfillment']['speech']
+    except requests.exceptions.RequestException as e:
+        c=c+1
+        print(e)
+        if(c==4):
+            return "Server Error"
+        else:
+            getResponse(url,Headers,c)
 
 def getObject(request, object_id):
     obj = get_object_or_404(Request, id=object_id)

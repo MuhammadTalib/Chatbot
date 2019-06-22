@@ -3,6 +3,7 @@ autopep8==1.4.4
 certifi==2019.3.9
 chardet==3.0.4
 colorama==0.4.1
+dj-database-url==0.5.0
 Django==2.2.1
 django-cors-headers==3.0.0
 django-rest-framework==0.1.0
@@ -19,6 +20,7 @@ pipenv==2018.11.26
 psycopg2==2.8.2
 pycodestyle==2.5.0
 pylint==2.3.1
+python-decouple==3.1
 pytz==2019.1
 requests==2.22.0
 six==1.12.0
