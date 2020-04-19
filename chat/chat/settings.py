@@ -9,7 +9,7 @@ SECRET_KEY = '+*r3%gkf)5eq*t6#(%@9)kuhv-r%u^q^mhyy+v!5mv5ejg2u%6'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['chatbot-server-0619.herokuapp.com']
+ALLOWED_HOSTS = ["chatbot-server-0619.herokuapp.com", 'localhost']
 
 
 INSTALLED_APPS = [
@@ -114,7 +114,7 @@ STATICFILES_DIRS = (
 )
 
 #  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
